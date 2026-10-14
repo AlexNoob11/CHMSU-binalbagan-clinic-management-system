@@ -255,8 +255,6 @@
     </style>
 </head>
 <body>
-
-    <!-- header section -->
     <header class="header">
         <div class="wrap">
             <div class="brand-container">
