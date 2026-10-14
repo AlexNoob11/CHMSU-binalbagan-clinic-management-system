@@ -50,8 +50,7 @@ if (isset($_POST['submit'])) {
             color: var(--text-main);
             line-height: 1.6;
         }
-
-        /* header */
+        
         .header {
             background-color: var(--primary-color);
             color: var(--white);
