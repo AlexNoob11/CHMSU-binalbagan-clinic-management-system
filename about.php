@@ -7,8 +7,6 @@
         <link href='http://fonts.googleapis.com/css?family=Ropa+Sans' rel='stylesheet' type='text/css'>
     </head>
     <body>
-        <!--start-wrap-->
-        
             <!--start-header-->
             <div class="header">
                 <div class="wrap">
@@ -20,8 +18,6 @@
                 <!--start-top-nav-->
                 <div class="top-nav">
                     <ul>
-                        
-                    
                         <li class="active"><a href="about.php">about</a></li>
                     </ul>                   
                 </div>
@@ -34,8 +30,7 @@
            <div class="wrap">
             <div class="contact">
             <div class="section group">             
-                <div class="col span_1_of_3">
-                    
+                <div class="col span_1_of_3">  
                 
             <!--end-wrap-->
     </body>
