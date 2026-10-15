@@ -5,7 +5,7 @@ session_start();
 // Include the database configuration
 include("include/config.php");
 
-// Check if the user is logged in, if not, redirect to the login page
+// Check if the user is logged in; if not, redirect to the login page
 if (!isset($_SESSION['user_id'])) {
     header("Location: login-user.php");
     exit();
@@ -15,13 +15,12 @@ if (!isset($_SESSION['user_id'])) {
 $current_user_id = mysqli_real_escape_string($con, $_SESSION['user_id']);
 
 $user_appointments_query = mysqli_query($con, "SELECT id FROM appointments WHERE userId = '$current_user_id'");
-$my_total_appointments = mysqli_num_rows($user_appointments_query);
+$my_total_appointments   = mysqli_num_rows($user_appointments_query);
 
 $upcoming_query = mysqli_query($con, "SELECT check_up_date, check_up_time FROM appointments WHERE userId = '$current_user_id' AND check_up_date >= CURDATE() ORDER BY check_up_date ASC LIMIT 1");
-$upcoming_row = mysqli_fetch_array($upcoming_query);
-$next_schedule = ($upcoming_row) ? $upcoming_row['check_up_date'] . ' @ ' . $upcoming_row['check_up_time'] : 'No upcoming schedule';
+$upcoming_row   = mysqli_fetch_array($upcoming_query);
+$next_schedule  = ($upcoming_row) ? $upcoming_row['check_up_date'] . ' @ ' . $upcoming_row['check_up_time'] : 'No upcoming schedule';
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -148,125 +147,126 @@ $next_schedule = ($upcoming_row) ? $upcoming_row['check_up_date'] . ' @ ' . $upc
     </style>
 </head>
 <body>
-<div id="app">        
-    <?php include('include/sidebar.php'); ?>
-    <div class="app-content">
-        <?php include('include/header.php'); ?>
+    <div id="app">        
+        <?php include('include/sidebar.php'); ?>
+        <div class="app-content">
+            <?php include('include/header.php'); ?>
 
-        <div class="main-content">
-            <div class="wrap-content container" id="container">
-                
-                <!-- start: PAGE TITLE -->
-                <section id="page-title" class="padding-top-15 padding-bottom-15">
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <h1 class="mainTitle">Dashboard Overview</h1>
+            <div class="main-content">
+                <div class="wrap-content container" id="container">
+                    
+                    <!-- start: PAGE TITLE -->
+                    <section id="page-title" class="padding-top-15 padding-bottom-15">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <h1 class="mainTitle">Dashboard Overview</h1>
+                            </div>
+                            <ol class="breadcrumb">
+                                <li><span>User</span></li>
+                                <li class="active"><span>Dashboard</span></li>
+                            </ol>
                         </div>
-                        <ol class="breadcrumb">
-                            <li><span>User</span></li>
-                            <li class="active"><span>Dashboard</span></li>
-                        </ol>
-                    </div>
-                </section>
-                <!-- end: PAGE TITLE -->
+                    </section>
+                    <!-- end: PAGE TITLE -->
 
-                <!-- start: CARDS WRAPPER GRID -->
-                <div class="container-fluid container-fullw p-0">
-                    <div class="row">
-                        
-                        <!-- Profile Card -->
-                        <div class="col-sm-4">
-                            <div class="analytics-card text-center">
-                                <div class="card-icon-box">
-                                    <i class="fa fa-user-md"></i>
-                                </div>
-                                <h3>My Profile</h3>
-                                <p>Manage your account settings, contact information, and personal configuration details safely.</p>
-                                <a href="edit-profile.php" class="action-link-btn">
-                                    Update Profile <i class="fa fa-arrow-right" style="margin-left: 5px; font-size: 10px;"></i>
-                                </a>
-                            </div>
-                        </div>
-                        
-                        <!-- History Log Card -->
-                        <div class="col-sm-4">
-                            <div class="analytics-card text-center">
-                                <div class="card-icon-box">
-                                    <i class="fa fa-calendar-check-o"></i>
-                                </div>
-                                <h3>My Appointments</h3>
-                                <p>Track pending active slots, check status verifications, or view archived medical checks.</p>
-                                <a href="medical-history.php" class="action-link-btn">
-                                    View History <i class="fa fa-arrow-right" style="margin-left: 5px; font-size: 10px;"></i>
-                                </a>
-                            </div>
-                        </div>
-                        
-                        <!-- Booking Operations Card -->
-                        <div class="col-sm-4">
-                            <div class="analytics-card text-center">
-                                <div class="card-icon-box">
-                                    <i class="fa fa-file-text-o"></i>
-                                </div>
-                                <h3>Book Appointment</h3>
-                                <p>Fill up medical assessment documents and request a structural check-up appointment slot.</p>
-                                <a href="book-appointment.php" class="action-link-btn">
-                                    Book Now <i class="fa fa-arrow-right" style="margin-left: 5px; font-size: 10px;"></i>
-                                </a>
-                            </div>
-                        </div>
-                        
-                    </div>
-
-                    <!-- Personal Metrics Footprint Summary Logs -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="summary-panel">
-                                <div class="summary-header"><i class="fa fa-id-card-o"></i> Personal Account Activity Summary</div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="log-row"><span>Total Clinic Encounters Registered</span><span><?php echo $my_total_appointments; ?></span></div>
-                                        <div class="log-row"><span>Account Access Validation</span><span>Verified</span></div>
+                    <!-- start: CARDS WRAPPER GRID -->
+                    <div class="container-fluid container-fullw p-0">
+                        <div class="row">
+                            
+                            <!-- Profile Card -->
+                            <div class="col-sm-4">
+                                <div class="analytics-card text-center">
+                                    <div class="card-icon-box">
+                                        <i class="fa fa-user-md"></i>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="log-row"><span>Next Slotted Evaluation Date</span><span><?php echo htmlspecialchars($next_schedule); ?></span></div>
-                                        <div class="log-row"><span>Current Session Date</span><span><?php echo date('Y-m-d'); ?></span></div>
+                                    <h3>My Profile</h3>
+                                    <p>Manage your account settings, contact information, and personal configuration details safely.</p>
+                                    <a href="edit-profile.php" class="action-link-btn">
+                                        Update Profile <i class="fa fa-arrow-right" style="margin-left: 5px; font-size: 10px;"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <!-- History Log Card -->
+                            <div class="col-sm-4">
+                                <div class="analytics-card text-center">
+                                    <div class="card-icon-box">
+                                        <i class="fa fa-calendar-check-o"></i>
+                                    </div>
+                                    <h3>My Appointments</h3>
+                                    <p>Track pending active slots, check status verifications, or view archived medical checks.</p>
+                                    <a href="medical-history.php" class="action-link-btn">
+                                        View History <i class="fa fa-arrow-right" style="margin-left: 5px; font-size: 10px;"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <!-- Booking Operations Card -->
+                            <div class="col-sm-4">
+                                <div class="analytics-card text-center">
+                                    <div class="card-icon-box">
+                                        <i class="fa fa-file-text-o"></i>
+                                    </div>
+                                    <h3>Book Appointment</h3>
+                                    <p>Fill up medical assessment documents and request a structural check-up appointment slot.</p>
+                                    <a href="book-appointment.php" class="action-link-btn">
+                                        Book Now <i class="fa fa-arrow-right" style="margin-left: 5px; font-size: 10px;"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <!-- Personal Metrics Footprint Summary Logs -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="summary-panel">
+                                    <div class="summary-header"><i class="fa fa-id-card-o"></i> Personal Account Activity Summary</div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="log-row"><span>Total Clinic Encounters Registered</span><span><?php echo htmlentities($my_total_appointments); ?></span></div>
+                                            <div class="log-row"><span>Account Access Validation</span><span>Verified</span></div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="log-row"><span>Next Slotted Evaluation Date</span><span><?php echo htmlspecialchars($next_schedule); ?></span></div>
+                                            <div class="log-row"><span>Current Session Date</span><span><?php echo date('Y-m-d'); ?></span></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
+                    </div>
+                    <!-- end: CARDS WRAPPER GRID -->
+                    
                 </div>
-                <!-- end: CARDS WRAPPER GRID -->
-                
             </div>
+            <?php include('include/footer.php'); ?>
+            <?php include('include/setting.php'); ?>
         </div>
-        <?php include('include/footer.php'); ?>
-        <?php include('include/setting.php'); ?>
     </div>
-</div>
 
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-<script src="vendor/modernizr/modernizr.js"></script>
-<script src="vendor/jquery-cookie/jquery.cookie.js"></script>
-<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-<script src="vendor/switchery/switchery.min.js"></script>
-<script src="vendor/maskedinput/jquery.maskedinput.min.js"></script>
-<script src="vendor/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
-<script src="vendor/autosize/autosize.min.js"></script>
-<script src="vendor/selectFx/classie.js"></script>
-<script src="vendor/selectFx/selectFx.js"></script>
-<script src="vendor/select2/select2.min.js"></script>
-<script src="vendor/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
-<script src="vendor/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
-<script src="assets/js/main.js"></script>
-<script src="assets/js/form-elements.js"></script>
-<script>
-    jQuery(document).ready(function() {
-        Main.init();
-    });
-</script>
+    <!-- MAIN JAVASCRIPTS -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/modernizr/modernizr.js"></script>
+    <script src="vendor/jquery-cookie/jquery.cookie.js"></script>
+    <script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="vendor/switchery/switchery.min.js"></script>
+    <script src="vendor/maskedinput/jquery.maskedinput.min.js"></script>
+    <script src="vendor/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="vendor/autosize/autosize.min.js"></script>
+    <script src="vendor/selectFx/classie.js"></script>
+    <script src="vendor/selectFx/selectFx.js"></script>
+    <script src="vendor/select2/select2.min.js"></script>
+    <script src="vendor/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+    <script src="vendor/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/form-elements.js"></script>
+    <script>
+        jQuery(document).ready(function() {
+            Main.init();
+        });
+    </script>
 </body>
 </html>
