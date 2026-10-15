@@ -1,29 +1,25 @@
 <?php
 session_start();
-//error_reporting(0);
+// error_reporting(0);
 include('include/config.php');
 include('include/checklogin.php');
 check_login();
 
-date_default_timezone_set('Asia/Kolkata'); // Change according to your timezone
+date_default_timezone_set('Asia/Kolkata');
 $currentTime = date('d-m-Y h:i:s A', time());
 
-if(isset($_POST['submit']))
-{
-    $cpass = mysqli_real_escape_string($con, $_POST['cpass']);
-    $npass = mysqli_real_escape_string($con, $_POST['npass']);
+if (isset($_POST['submit'])) {
+    $cpass   = mysqli_real_escape_string($con, $_POST['cpass']);
+    $npass   = mysqli_real_escape_string($con, $_POST['npass']);
+    $user_id = intval($_SESSION['id']);
     
-    $sql = mysqli_query($con, "SELECT password FROM users WHERE password='".md5($cpass)."' AND id='".$_SESSION['id']."'");
+    $sql = mysqli_query($con, "SELECT password FROM users WHERE password = '" . md5($cpass) . "' AND id = '$user_id'");
     $num = mysqli_fetch_array($sql);
     
-    if($num > 0)
-    {
-        // Fix: Changed variable from $con to $update_sql to prevent overwriting your database link identifier
-        $update_sql = mysqli_query($con, "UPDATE users SET password='".md5($npass)."', updationDate='$currentTime' WHERE id='".$_SESSION['id']."'");
+    if ($num > 0) {
+        $update_sql = mysqli_query($con, "UPDATE users SET password = '" . md5($npass) . "', updationDate = '$currentTime' WHERE id = '$user_id'");
         $_SESSION['msg_success'] = "Password Changed Successfully !!";
-    }
-    else
-    {
+    } else {
         $_SESSION['msg_error'] = "Old Password does not match !!";
     }
 }
@@ -93,7 +89,6 @@ if(isset($_POST['submit']))
 				box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15) !important;
 			}
 			
-			/* Theme Custom Accent Controls (#1e3a8a) */
 			.btn-custom-submit {
 				background-color: #1e3a8a !important;
 				color: #ffffff !important;
@@ -111,7 +106,6 @@ if(isset($_POST['submit']))
 				box-shadow: 0 4px 12px rgba(30, 58, 138, 0.25);
 			}
 
-			/* Modern Notification Alert Banners */
 			.alert-custom {
 				padding: 12px 16px;
 				border-radius: 8px;
@@ -133,28 +127,20 @@ if(isset($_POST['submit']))
 		</style>
 
 		<script type="text/javascript">
-			function valid()
-			{
-				if(document.chngpwd.cpass.value=="")
-				{
+			function valid() {
+				if (document.chngpwd.cpass.value == "") {
 					alert("Current Password Field is Empty !!");
 					document.chngpwd.cpass.focus();
 					return false;
-				}
-				else if(document.chngpwd.npass.value=="")
-				{
+				} else if (document.chngpwd.npass.value == "") {
 					alert("New Password Field is Empty !!");
 					document.chngpwd.npass.focus();
 					return false;
-				}
-				else if(document.chngpwd.cfpass.value=="")
-				{
+				} else if (document.chngpwd.cfpass.value == "") {
 					alert("Confirm Password Field is Empty !!");
 					document.chngpwd.cfpass.focus();
 					return false;
-				}
-				else if(document.chngpwd.npass.value != document.chngpwd.cfpass.value)
-				{
+				} else if (document.chngpwd.npass.value != document.chngpwd.cfpass.value) {
 					alert("Password and Confirm Password Field do not match !!");
 					document.chngpwd.cfpass.focus();
 					return false;
@@ -169,7 +155,7 @@ if(isset($_POST['submit']))
 			<div class="app-content">
 				<?php include('include/header.php');?>
 						
-				<div class="main-content" >
+				<div class="main-content">
 					<div class="wrap-content container" id="container">
 						<!-- start: PAGE TITLE -->
 						<section id="page-title" class="padding-top-15 padding-bottom-15">
@@ -196,22 +182,21 @@ if(isset($_POST['submit']))
 										</div>
 
 										<!-- Message Display Logic Area -->
-										<?php if(isset($_SESSION['msg_error']) && $_SESSION['msg_error'] != "") { ?>
+										<?php if (isset($_SESSION['msg_error']) && $_SESSION['msg_error'] != "") { ?>
 											<div class="alert-custom alert-custom-danger">
 												<i class="fa fa-exclamation-circle"></i> <?php echo htmlentities($_SESSION['msg_error']); ?>
 												<?php $_SESSION['msg_error'] = ""; ?>
 											</div>
 										<?php } ?>
 
-										<?php if(isset($_SESSION['msg_success']) && $_SESSION['msg_success'] != "") { ?>
+										<?php if (isset($_SESSION['msg_success']) && $_SESSION['msg_success'] != "") { ?>
 											<div class="alert-custom alert-custom-success">
 												<i class="fa fa-check-circle"></i> <?php echo htmlentities($_SESSION['msg_success']); ?>
 												<?php $_SESSION['msg_success'] = ""; ?>
 											</div>
 										<?php } ?>
 										
-										<!-- Back-end error clearing container check for backwards safety -->
-										<?php if(isset($_SESSION['msg1']) && $_SESSION['msg1'] != "") { ?>
+										<?php if (isset($_SESSION['msg1']) && $_SESSION['msg1'] != "") { ?>
 											<div class="alert-custom alert-custom-danger">
 												<i class="fa fa-info-circle"></i> <?php echo htmlentities($_SESSION['msg1']); ?>
 												<?php $_SESSION['msg1'] = ""; ?>
